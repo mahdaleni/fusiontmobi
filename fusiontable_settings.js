@@ -30,18 +30,23 @@ var MapsLib = MapsLib || {}; MapsLib.schemaVersion = 2;
     // See https://developers.google.com/fusiontables/docs/v1/migration_guide for more info
 
     // The encrypted Table ID of your Fusion Table (found under File => About)
-    MapsLib.fusionTableId = "1zoe9aMYxHe66T1qStDGPjk4Rr_faF5PAIBihqQYs";
+    MapsLib.fusionTableId = "1_dGqUopxDBPgQnpE_6cCfTprmbDlztAyh5lBaKji";
 
     // *New Fusion Tables Requirement* API key. found at https://code.google.com/apis/console/
     // *Important* this key is for demonstration purposes. please register your own.
     MapsLib.googleApiKey ="AIzaSyAwKul3UagBhi9fpj5mhDa3zOeyqrDnuKA";
+    
 
+    // DONE!  YOU COULD DELETE EVERYTHING AFTER THIS POINT AND STILL HAVE A WORKING APP.
+    // BELOW ARE CUSTOM OVERRIDES TO MAKE YOUR APP MORE AWESOME.  UNCOMMENT EACH SECTION AS YOU GO.
 
-    // YOU CAN DELETE EVERYTHING AFTER THIS POINT AND STILL HAVE A WORKING APP. //
-    // EVERYTHING BELOW IS CUSTOM OVERRIDES TO MAKE YOUR APP EVEN MORE AWESOME. //
+    // IF YOU GET STUCK, PLEASE VISIT https://github.com/sfbrigade/Mobile-Fusion-Tables
+    // YOU CAN SUBMIT AN ISSUE OR CONTACT AN AUTHOR.
 
 
 $.extend(MapsLib, {
+
+/*
 
     ////////////////////////
     // 2. SEARCH SETTINGS //
@@ -90,10 +95,6 @@ $.extend(MapsLib, {
     //       - min (default = min value): override min value
     //       - max (default = max value): override max value
     //
-    //      type: "datepicker" (default for numbers and dates, automatically gets minimum and maximum values)
-    //       - label
-    //       - column: name of column
-    //
     //      type: "checkbox"
     //       - label
     //       - is_checked (default = false): start out as checked
@@ -117,45 +118,43 @@ $.extend(MapsLib, {
 
     searchPage: { 
         allColumns: false,
-        columns: [
-            { label: "Project Type", type: "dropdown", template: "'Project Type' CONTAINS '{text}'",
-                entries: [
-                ["All Projects", "", true],
-                "Bicycle",
-                "Major Capital Projects",
-                "Pedestrian Safety",
-                "Plans and Studies",
-                "Signs and Signals",
-                "Street Repair", 
-                "Transit Enhancements",
-                "Transit Rehab",
-                ["Transportation Demand Mgmt", "'Project Type' CONTAINS 'Transportation Demand Management'"]
+        distanceFilter: { 
+            entries: [ 
+            ["Anywhere", "0", true], 
+            ["2 blocks", "400 meters"], 
+            ["1/2 mile", ".5 miles"], 
+            ["1 mile"], 
+            ["2 miles"] ]
+        },
+        columns: [ 
+            { label: "Rating Filter", type: "dropdown", entries: [
+                ["Any Rating", "'last_score' > 0", true],
+                ["Good", "'last_score' > 90"],
+                ["Adequate", "'last_score' > 85 AND 'last_score' <= 90"],
+                ["Needs Improvement", "'last_score' > 70 AND 'last_score' <= 85"],
+                ["Poor", "'last_score' <= 70 AND 'last_score' > 0"]
             ] },
-            { label: "Cost Range", type: "dropdown", 
-                entries: [
-                ["Any Cost", "", true],
-                ["At least $1M", "'Total Project Cost Estimate' LIKE '$%_,___,___'"],
-                ["At least $10M", "'Total Project Cost Estimate' LIKE '$%__,___,___'"],
-                ["At least $100M", "'Total Project Cost Estimate' LIKE '$%___,___,___'"]
-            ] },
-            { label: "Show Current Projects Only", type: "checkbox", 
-                is_checked: true,
-                checked_query: "'Percent Complete' NOT EQUAL TO '0%' AND 'Percent Complete' NOT EQUAL TO '100%'" },
-        ]
+            { label: "Name", type: "text", column: "name"},
+            { label: "Violations", type: "text", column: "violations"},
+            { label: "Score", type: "slider", column: "last_score", min: 0, max: 100},
+            { label: "Last Inspected", type: "datepicker", column: "last_inspection_date"},
+        ],
     },
+*/
 
 
     ///////////////////////
     // 3. CUSTOM CONTENT //
     ///////////////////////
 
+/*
     // Title bar (including title of website)
-    title: "SFCTA Projects",
+    title: "SF Restaurant Inspections",
 
     // Contents of the About Page.  You can use "{title}" to insert your title.
     aboutPage: " \
         <h3>About {title}</h3> \
-        <p>This is a demonstration of a Mobile Template using Fusion Tables.    Developed by SF Brigade for Code For America, it's an adaptation of Derek Eder's searchable Fusion Table template, licensed under the <a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/License' target='_blank'>MIT License</a>.    This particular application uses <a href='http://www.sfcta.org/mystreetsf-map' target='_blank'>MyStreetSF</a> data provided by the SFCTA.</p> \
+        <p>This is a demonstration of a Mobile Template using Fusion Tables.    Developed by SF Brigade for Code For America, it's an adaptation of Derek Eder's searchable Fusion Table template, licensed under the <a href='https://github.com/derekeder/FusionTable-Map-Template/wiki/License' target='_blank'>MIT License</a>.    This particular application uses health inspection data for businesses in San Francisco.</p> \
         <p>To use this template for your own Fusion Table data, <a href='https://github.com/sfbrigade/Mobile-Fusion-Tables' target='_blank'>clone this repository</a> and replace the fields inside fusiontable_settings.js to match your content.</p> \
         ",
 
@@ -163,15 +162,22 @@ $.extend(MapsLib, {
     // you can use them by setting the style and template IDs here.
     // (You can find your IDs inside the link generated by the 'Publish' option in Fusion Tables.)
     // (for more details, see https://developers.google.com/fusiontables/docs/v1/using#WorkingStyles)
-    //styleId: 2,
-    //templateId: 3,
-
+    styleId: 2,
+    templateId: 3,
+    
     // This will go in your style block.  Useful if customizing your infoboxes.
     customCSS: " \
-        .infobox-header, .ui-li-desc, #entity-text { font-family: Arial, Helvetica, Geneva, sans-serif; white-space:normal; } \
+        .infobox-header, .ui-li-desc, li, #score-text { font-family: Arial, Helvetica, Geneva, sans-serif; white-space:normal;} \
+        .infobox-map { width:220px; height:107px;} \
+        .infobox-header { display:inline; padding-right: 10px; } \
         .infobox-subheader { padding-top: 5px; } \
-        .infobox-map { width:220px; } \
-        .infobox-header { display:inline; text-transform:uppercase; padding-right: 10px; } \
+        .moreinfo { margin-left:7px; min-width:18px; position:absolute; \
+                top:45%; bottom:45%; min-height:18px; } \
+        .score { float:left; font-size:medium; padding:5px; border:1px solid black; margin:2px 7px 5px 0px; } \
+        .score.grn_blank { background-color: #00de3c; color: white; } \
+        .score.ltblu_blank { background-color: #55d7d7; color: white; } \
+        .score.orange_blank { background-color: #ff9c00; color: white; } \
+        .score.red_blank { background-color: #fb6155; color: white; } \
     ",
 
     // customInfoboxHtml can be defined as a string or a function:
@@ -189,54 +195,63 @@ $.extend(MapsLib, {
     //        - true when populating a row in the "List" view
 
     // delimitedColumns (optional): specify delimiter per column, and row.COLUMN_NAME will return an array
-    //delimitedColumns: {"Resources": ";"},
+    delimitedColumns: {"violations": ";"},
 
     // listViewSortByColumn (optional): specify column to sort by, instead of sorting by distance
     //                                  append "DESC" to sort in reverse
-    //listViewSortByColumn: "Name",
+    listViewSortByColumn: "name",
 
-    customInfoboxHtml: ' \
+    customInfoboxHtml: " \
         {{#if isListView}} \
             <div> \
         {{else}} \
-            <div class="infobox-map"> \
+            <div class='infobox-map'> \
         {{/if}} \
-        <h4 class="infobox-header">{{row.Project_Name}}</h4> \
-        <p class="ui-li-desc infobox-subheader"><br> \
-        <strong>{{row.Project_Type}}</strong></p> \
-        <p class="ui-li-desc">Cost Estimate: {{row.Total_Project_Cost_Estimate}} \
-        <br>Completion Date: {{row.Project_Completion_Expected}} \
+        <div class='score {{row.last_score_category}}'><span id='score-text'>{{row.last_score}}</span></div> \
+        <h4 class='infobox-header'>{{row.name}}</h4> \
+        <p class='ui-li-desc infobox-subheader'> \
         {{#if isListView}} \
+            {{row.address}}</p> \
         {{else}} \
-            {{#if row.Project_Details_Page}} \
-                <br><a href="{{row.Project_Details_Page}}" target="_blank">{{row.Project_Details_Page}}</a> \
+            <strong>Last inspected: {{row.last_inspection_date}}</strong> \
+            <br>{{row.address}}</p> \
+            <p class='ui-li-desc infobox-subheader'> \
+            {{#if row.violations}} \
+                <b>Recent violations ({{row.violations.length}}):</b> \
+                {{#each row.violations}} \
+                    <br>- {{this}} \
+                {{/each}} \
+            {{else}} \
+                <b>Recent violations:</b> None \
             {{/if}} \
         {{/if}} \
-        </p></div>',
+        </p></div>",
 
     // Infoboxes will also appear (unless blank) on your nearby or search address pins.
     // HTML is OK.  Use "{address}" to denote the entered address for addressPinInfobox.
     nearbyPinInfobox: "You are here.",
     addressPinInfobox: "{address}",
+*/
 
 
     ////////////////////////
     // 4. MAP PREFERENCES //
     ////////////////////////
 
+/*
     // Override the location column in your Fusion Table (useful if you have multiple columns)
     // NOTE: if you have "latitude" and "longitude" columns, just use "latitude"
-    //locationColumn:  "Geometry",
+    //locationColumn:  "latitude",
 
-    // Bounds and center that your map defaults to when location services are off.
+    // Center and zoom radius that your map defaults to when location services are off.
     // If useDefaultMapBounds is true (see section 2), this also determines which addresses get priority with autocomplete
     defaultMapBounds: {
 
         // Use [latitude, longitude] or address
-        center: "Pekanbaru, Riau, Indonesia",
+        center: "San Francisco, CA",
 
         // "X miles" or "X meters"
-        radius: "600 miles"
+        radius: "6 miles"
     },
 
     // Set useNearbyLocation to false if you don't want to get the user's location.
@@ -249,7 +264,7 @@ $.extend(MapsLib, {
         boundsExceededMessage:      "Your location is far away from San Francisco.    Defaulting to city limits.",
 
         // use this zoom radius if starting at nearby location
-        nearbyZoomRadius:           "1 mile",
+        nearbyZoomRadius:           "200 meters",
 
         // Snap to nearby zoom radius when user hits "Nearby"?    Options are:
         // true              = always snap to zoom level
@@ -269,13 +284,20 @@ $.extend(MapsLib, {
     //            0 = completely invisible
     //            100 = completely opaque
 
-    // mapOverlays: []
+    mapOverlays: [ 
+        "1WNxRvnAy1085Y5IxBY3TehXuLbpWx-yECKa4hJGg", // FusionTable ID of another table
+        { 
+            imageURL: 'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+            cornerNW: [40.712216, -74.22655],
+            cornerSE: [40.773941, -74.12544],
+            opacityPercent: 60
+        },
+    ],
 
     // If needed, you can change the visibility of these layers by calling this in script:
     //    MapsLib.setLayerVisibility([array of indices from bottom to top])
     // Examples: 
     //    MapsLib.setLayerVisibility([0,2]) will show only the first and third layers, and the third layer will be on top.
     //    MapsLib.setLayerVisibility([]) will hide all layers
-
-
+*/
 });
