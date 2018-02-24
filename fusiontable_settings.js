@@ -19,7 +19,7 @@
  *     - How It Should Use Your Nearby Location
  */
 
-var MapsLib = MapsLib || {}; MapsLib.schemaVersion = 2;
+var MapsLib = MapsLib || {}; MapsLib.schemaVersion = ;
 
 
     /////////////////////////
