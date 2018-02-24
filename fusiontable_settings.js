@@ -62,7 +62,7 @@ $.extend(MapsLib, {
     //  - addressShow (default=true):            show address field for centering search
     //
     //  - addressAutocomplete:                   autocomplete options for address field (set to false if you don't want autocomplete)
-    //     - country (default="US"):             restrict autocomplete to search within said country (2-character country code)
+    //     - country (default="ID"):             restrict autocomplete to search within said country (2-character country code)
     //     - useDefaultMapBounds (default=true): addresses within defaultMapBounds (see section 4) will be prioritized to the top of autocomplete results
     // 
     //  - distanceFilter: drop-down for restricting search results by distance to address (or nearby).  Comment this out to have no such drop-down.
